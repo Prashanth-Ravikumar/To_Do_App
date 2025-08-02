@@ -209,7 +209,7 @@ const HomeScreen = () => {
           onPress={() => toggleTodo(item.id, item.completed)}
         >
           {item.completed && (
-            <MaterialCommunityIcons name="check" size={20} color="#4285F4" />
+            <MaterialCommunityIcons name="check" size={20} color="#6366F1" />
           )}
         </TouchableOpacity>
         <View style={styles.todoTextContainer}>
@@ -237,13 +237,13 @@ const HomeScreen = () => {
           style={styles.editButton}
           onPress={() => openEditModal(item)}
         >
-          <MaterialCommunityIcons name="pencil-outline" size={20} color="#4285F4" />
+          <MaterialCommunityIcons name="pencil-outline" size={20} color="#4F46E5" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.deleteButton}
           onPress={() => deleteTodo(item.id)}
         >
-          <MaterialCommunityIcons name="delete-outline" size={20} color="#ff4444" />
+          <MaterialCommunityIcons name="delete-outline" size={20} color="#4F46E5" />
         </TouchableOpacity>
       </View>
       <DateTimePickerModal
@@ -281,7 +281,7 @@ const HomeScreen = () => {
         />
       )}
 
-      <FAB onPress={() => setAddModalVisible(true)} />
+      <FAB style={styles.addButton} onPress={() => setAddModalVisible(true)} />
 
       <Modal
         visible={isAddModalVisible}
@@ -334,44 +334,71 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
+    backgroundColor: "#FAFBFF",
+    padding: 24,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginTop: 24,
+    marginBottom: 32,
+    paddingHorizontal: 24,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    padding: 20,
+    borderRadius: 24,
+    shadowColor: "#6366F1",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 3,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 34,
+    fontWeight: "900",
+    color: "#334155",
+    letterSpacing: 0.5,
+    textShadowColor: 'rgba(99, 102, 241, 0.1)',
+    textShadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    textShadowRadius: 4,
   },
   todoList: {
     flex: 1,
   },
   todoItem: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    marginBottom: 8,
-    elevation: 2,
-    shadowColor: "#000",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    borderRadius: 24,
+    marginBottom: 16,
+    elevation: 3,
+    shadowColor: "#6366F1",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 8,
     },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(99, 102, 241, 0.08)",
+    transform: [{ scale: 1 }],
+    backdropFilter: "blur(8px)",
   },
   todoContent: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 12,
+    padding: 20,
   },
   todoTextContainer: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
+    width: "100%",
+    marginLeft: 8,
     justifyContent: "space-between",
     marginRight: 8,
   },
@@ -380,29 +407,42 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   todoCheckbox: {
-    width: 24,
-    height: 24,
+    width: 30,
+    height: 30,
     borderWidth: 2,
-    borderColor: "#4285F4",
-    borderRadius: 12,
-    marginRight: 12,
+    borderColor: "#6366F1",
+    borderRadius: 15,
+    marginRight: 16,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: 'rgba(99, 102, 241, 0.04)',
+    shadowColor: "#6366F1",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   todoText: {
-    fontSize: 16,
-    color: "#333",
+    fontSize: 17,
+    color: "#334155",
     flex: 1,
     marginRight: 8,
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
   todoDescription: {
     fontSize: 14,
-    color: "#666",
-    marginTop: 4,
+    color: "#64748B",
+    marginTop: 8,
+    lineHeight: 22,
+    letterSpacing: 0.2,
+    fontWeight: '400',
   },
   completedTodoText: {
     textDecorationLine: "line-through",
-    color: "#999",
+    color: "#666666",
   },
   editButton: {
     padding: 8,
@@ -412,13 +452,26 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   signOutButton: {
-    backgroundColor: "#666",
-    paddingHorizontal: 15,
+    backgroundColor: "rgba(99, 102, 241, 0.1)",
+    paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 5,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "rgba(99, 102, 241, 0.2)",
+    shadowColor: "#6366F1",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 1,
   },
   signOutButtonText: {
-    color: "#fff",
+    color: "#6366F1",
+    fontWeight: '500',
+    fontSize: 13,
+    letterSpacing: 0.2,
   },
   modalContainer: {
     flex: 1,
@@ -426,46 +479,86 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.98)",
+    padding: 32,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    shadowColor: "#6366F1",
+    shadowOffset: {
+      width: 0,
+      height: -6,
+    },
+    shadowOpacity: 0.16,
+    shadowRadius: 16,
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: "rgba(99, 102, 241, 0.08)",
   },
   modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 16,
+    fontSize: 32,
+    fontWeight: "800",
+    marginBottom: 28,
+    color: "#334155",
+    letterSpacing: 0.5,
   },
   modalInput: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 12,
+    borderWidth: 1.5,
+    borderColor: "rgba(99, 102, 241, 0.2)",
+    borderRadius: 20,
+    padding: 20,
     fontSize: 16,
-    marginBottom: 16,
+    marginBottom: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    color: "#334155",
+    shadowColor: "#6366F1",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
   },
   modalButtons: {
     flexDirection: "row",
     justifyContent: "flex-end",
   },
   modalButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginLeft: 10,
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    borderRadius: 20,
+    marginLeft: 16,
+    borderWidth: 0,
+    shadowColor: "#6366F1",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 3,
+    minWidth: 120,
+    alignItems: 'center',
   },
   cancelButton: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "rgba(99, 102, 241, 0.08)",
+    borderWidth: 1,
+    borderColor: "rgba(99, 102, 241, 0.16)",
   },
   cancelButtonText: {
-    color: "#666",
+    color: "#6366F1",
+    fontWeight: "600",
+    fontSize: 16,
+    letterSpacing: 0.3,
   },
   addButton: {
-    backgroundColor: "#4285F4",
+    backgroundColor: "#6366F1",
+    borderWidth: 0,
   },
   addButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: "#FFFFFF",
+    fontWeight: "600",
+    fontSize: 16,
+    letterSpacing: 0.3,
   },
 });
 

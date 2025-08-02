@@ -40,17 +40,17 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#E9F5F4',
   },
   activeTab: {
-    backgroundColor: '#4285F4',
+    backgroundColor: '#2A9D8F',
   },
   tabText: {
-    color: '#666',
+    color: '#264653',
     fontWeight: '500',
   },
   activeTabText: {
-    color: '#fff',
+    color: '#ffffff',
   },
 });
 
