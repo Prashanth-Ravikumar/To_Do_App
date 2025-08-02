@@ -44,7 +44,7 @@ const HomeScreen = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [isAddModalVisible, setAddModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [fadeAnim] = useState(new Animated.Value(1));
+  const [fadeAnims, setFadeAnims] = useState({});
 
   useEffect(() => {
     if (!auth.currentUser) return;
@@ -101,13 +101,18 @@ const HomeScreen = () => {
   };
 
   const toggleTodo = async (id, completed) => {
+    if (!fadeAnims[id]) {
+      fadeAnims[id] = new Animated.Value(1);
+      setFadeAnims({...fadeAnims});
+    }
+
     Animated.sequence([
-      Animated.timing(fadeAnim, {
+      Animated.timing(fadeAnims[id], {
         toValue: 0.5,
         duration: 100,
         useNativeDriver: true,
       }),
-      Animated.timing(fadeAnim, {
+      Animated.timing(fadeAnims[id], {
         toValue: 1,
         duration: 100,
         useNativeDriver: true,
@@ -125,12 +130,20 @@ const HomeScreen = () => {
 
   const deleteTodo = async (id) => {
     try {
-      Animated.timing(fadeAnim, {
+      if (!fadeAnims[id]) {
+        fadeAnims[id] = new Animated.Value(1);
+        setFadeAnims({...fadeAnims});
+      }
+
+      Animated.timing(fadeAnims[id], {
         toValue: 0,
         duration: 200,
         useNativeDriver: true,
       }).start(async () => {
         await deleteDoc(doc(db, "todos", id));
+        // Remove the animation value after deletion
+        delete fadeAnims[id];
+        setFadeAnims({...fadeAnims});
       });
     } catch (error) {
       console.error("Error deleting todo:", error);
@@ -201,9 +214,16 @@ const HomeScreen = () => {
     setIsEditMode(false);
   };
 
-  const renderTodoItem = ({ item }) => (
-    <Animated.View style={[styles.todoItem, { opacity: fadeAnim }]}>
-      <View style={styles.todoContent}>
+  const renderTodoItem = ({ item }) => {
+    // Ensure each todo has its own fade animation
+    if (!fadeAnims[item.id]) {
+      fadeAnims[item.id] = new Animated.Value(1);
+      setFadeAnims({...fadeAnims});
+    }
+
+    return (
+      <Animated.View style={[styles.todoItem, { opacity: fadeAnims[item.id] }]}>
+        <View style={styles.todoContent}>
         <TouchableOpacity
           style={styles.todoCheckbox}
           onPress={() => toggleTodo(item.id, item.completed)}
@@ -214,24 +234,25 @@ const HomeScreen = () => {
         </TouchableOpacity>
         <View style={styles.todoTextContainer}>
           <View style={styles.todoTextSection}>
-            <Text
-              style={[styles.todoText, item.completed && styles.completedTodoText]}
-            >
-              {item.title}
-            </Text>
-            {item.description ? (
+            <View style={styles.todoMainContent}>
               <Text
-                style={[styles.todoDescription, item.completed && styles.completedTodoText]}
-                numberOfLines={2}
+                style={[styles.todoText, item.completed && styles.completedTodoText]}
               >
-                {item.description}
+                {item.title}
               </Text>
-            ) : null}
+              {item.description ? (
+                <Text
+                  style={[styles.todoDescription, item.completed && styles.completedTodoText]}
+                >
+                  {item.description}
+                </Text>
+              ) : null}
+            </View>
+            <DatePickerButton
+              onPress={() => showDatePicker(item)}
+              dueDate={item.dueDate ? new Date(item.dueDate.toDate()) : null}
+            />
           </View>
-          <DatePickerButton
-            onPress={() => showDatePicker(item)}
-            dueDate={item.dueDate ? new Date(item.dueDate.toDate()) : null}
-          />
         </View>
         <TouchableOpacity
           style={styles.editButton}
@@ -253,7 +274,8 @@ const HomeScreen = () => {
         onCancel={handleCancelDate}
       />
     </Animated.View>
-  );
+    );
+  };
 
   return (
     <View style={[styles.container, SafeViewAndroid.AndroidSafeArea]}>
@@ -390,21 +412,18 @@ const styles = StyleSheet.create({
   },
   todoContent: {
     flexDirection: "row",
-    alignItems: "center",
-    padding: 20,
+    alignItems: "flex-start",
+    padding: 16,
   },
   todoTextContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    marginLeft: 8,
-    justifyContent: "space-between",
-    marginRight: 8,
+    marginHorizontal: 8,
   },
   todoTextSection: {
     flex: 1,
-    marginRight: 8,
+  },
+  todoMainContent: {
+    marginBottom: 8,
   },
   todoCheckbox: {
     width: 30,
@@ -425,18 +444,16 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   todoText: {
-    fontSize: 17,
+    fontSize: 16,
     color: "#334155",
-    flex: 1,
-    marginRight: 8,
     fontWeight: '600',
     letterSpacing: 0.3,
+    marginBottom: 4,
   },
   todoDescription: {
     fontSize: 14,
     color: "#64748B",
-    marginTop: 8,
-    lineHeight: 22,
+    lineHeight: 20,
     letterSpacing: 0.2,
     fontWeight: '400',
   },
