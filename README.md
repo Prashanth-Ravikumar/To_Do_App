@@ -73,7 +73,7 @@ firebaseConfig.js  # Firebase initialization
 
 ## 🎥 Demo Walkthrough
 
-📽 [Watch Loom Demo](https://loom.com/your-demo-link-here)
+📽 [Watch Loom Demo]https://drive.google.com/file/d/1rrDz6TQOI0plGeNvGAEp7h03qVCyrp35/view?usp=drive_link
 
 This video explains:
 
@@ -88,8 +88,7 @@ This video explains:
 1. **Clone the repo**
 
    ```bash
-   git clone https://github.com/your-username/todo-hackathon-app.git
-   cd todo-hackathon-app
+   git clone https://github.com/Prashanth-Ravikumar/To_Do_App.git
    ```
 
 2. **Install dependencies**
